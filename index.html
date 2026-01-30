@@ -96,7 +96,7 @@
         /* 这里的 top 决定了文字的高度。越负越高（离圆心越远） */
         .item-inner { 
             position: absolute; 
-            top: -138px;  /* 调整了这个数值，让文字位置更合理 */
+            top: -138px;  
             left: -50px; 
             width: 100px; 
             text-align: center; 
@@ -119,12 +119,12 @@
             text-shadow: 1px 1px 0 rgba(255,255,255,0.9); 
         }
 
-        /* --- 【修复点】中心动态熊猫 (CSS动画) --- */
+        /* --- 【核心修改】中心小熊 (Mocha Bear) --- */
         .center-circle {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 65px; height: 65px;
+            width: 70px; height: 70px; /* 稍微加大一点 */
             background: #fff;
             border-radius: 50%;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
@@ -134,20 +134,14 @@
             border: 3px solid #fff;
         }
         
-        /* 使用稳定的静态图，加上CSS动画让它动起来 */
+        /* 使用 Giphy 稳定的 Sticker 链接，就是那个抱着爱心的熊 */
         .center-bear-img {
-            width: 80%;
-            height: 80%;
-            object-fit: contain;
-            /* 动画：每1秒蹦一下 */
-            animation: bounceBear 1.5s infinite ease-in-out;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.1);
         }
         
-        @keyframes bounceBear {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-3px) scale(1.1); }
-        }
-
         /* --- 5. 按钮 --- */
         #spinBtn {
             width: 80%; padding: 16px; border-radius: 20px; border: none;
@@ -174,25 +168,16 @@
         
         /* 弹窗图片样式 */
         #m-icon {
-            width: 100px; height: 100px; object-fit: contain;
+            width: 110px; height: 110px; object-fit: contain;
             margin: 10px auto; display: block;
         }
         
-        /* 中奖时的动态效果：心跳放大 */
+        /* 中奖动画 */
         .anim-win { animation: pulseWin 1s infinite; }
         @keyframes pulseWin {
             0% { transform: scale(1); }
             50% { transform: scale(1.1) rotate(5deg); }
             100% { transform: scale(1); }
-        }
-        
-        /* 没中奖时的动态效果：摇头 */
-        .anim-lose { animation: shakeLose 0.5s infinite; }
-        @keyframes shakeLose {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px) rotate(-5deg); }
-            75% { transform: translateX(5px) rotate(5deg); }
-            100% { transform: translateX(0); }
         }
         
         .close-btn {
@@ -259,7 +244,7 @@
                 </div>
 
                 <div class="center-circle">
-                    <img class="center-bear-img" src="https://cdn-icons-png.flaticon.com/512/1998/1998627.png" alt="可爱熊猫">
+                    <img class="center-bear-img" src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif" alt="可爱小熊">
                 </div>
             </div>
         </div>
@@ -277,10 +262,12 @@
     </div>
 
     <script>
-        // --- 素材库 (全部换成稳定的静态图标，用代码控制动画) ---
-        const bearIcon = "https://cdn-icons-png.flaticon.com/512/1998/1998627.png";
-        const winIcon = "https://cdn-icons-png.flaticon.com/512/4213/4213958.png"; // 礼物盒
-        const loseIcon = "https://cdn-icons-png.flaticon.com/512/742/742752.png"; // 哭脸
+        // --- 素材库 ---
+        // 1. 中奖动图：换成了这个系列的庆祝小熊
+        const winGif = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaDRrZ2V4Z3A4Y3V6Z2txZ3A4Y3V6Z2txZ3A4Y3V6ZyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/26BRv0ThflsHCqDrG/giphy.gif"; 
+        
+        // 2. 失败动图：哭哭或者搞怪
+        const loseGif = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmM2ZDJ2aHZ4Z3A4Y3V6Z2txZ3A4Y3V6Z2txZ3A4Y3V6ZyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/U77FFxiyXQlKg/giphy.gif";
 
         let count = 0;
         let rotation = 0;
@@ -346,8 +333,8 @@
                     document.getElementById('m-title').style.color = "#FF2D55";
                     
                     // 设置中奖图标和动画
-                    mIcon.src = winIcon;
-                    mIcon.className = "anim-win"; // 添加呼吸动画
+                    mIcon.src = winGif;
+                    mIcon.className = "anim-win"; 
 
                     document.getElementById('m-text').innerHTML = "天呐！你抽中了【神秘大奖】！<br><strong>快问老公是什么！</strong><br>(礼物属于你啦)";
                     btn.innerText = "再次回味中奖瞬间 ❤️"; btn.style.background = "#34C759";
@@ -356,9 +343,9 @@
                     document.getElementById('m-title').innerText = "遗憾离场...";
                     document.getElementById('m-title').style.color = "#666";
                     
-                    // 设置未中奖图标和动画
-                    mIcon.src = loseIcon;
-                    mIcon.className = "anim-lose"; // 添加摇头动画
+                    // 设置未中奖图标
+                    mIcon.src = loseGif;
+                    mIcon.className = ""; // 移除大奖动画
 
                     document.getElementById('m-text').innerHTML = "哎呀！什么都没有抽到！<br><strong>老婆大人</strong>，再试一次，手气在后面！";
                     btn.innerText = `再抽一次 (第 ${count+1} 次)`; btn.style.background = "#007AFF";
