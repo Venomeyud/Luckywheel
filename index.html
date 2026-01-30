@@ -96,20 +96,20 @@
         .content-wrap { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }
         .item { position: absolute; top: 50%; left: 50%; width: 0; height: 0; }
         
-        /* 【修改点1】将 top 值改得更小(更负)，让内容离圆心更远，即“往上提” */
         .item-inner { 
             position: absolute; 
-            top: -142px; /* 之前是-125px，现在往外推，显得更高 */
+            /* 保持之前调高的位置 */
+            top: -142px; 
             left: -50px; 
             width: 100px; 
             text-align: center; 
         }
         
         .item img { 
-            width: 40px; height: 40px; 
+            width: 42px; height: 42px; /* 图片稍微大一丢丢，因为文字少了 */
             object-fit: contain; 
             display: block; 
-            margin: 0 auto 2px auto; /* 减小间距 */
+            margin: 0 auto 4px auto;
             filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1)); 
         }
         
@@ -122,7 +122,7 @@
             text-shadow: 1px 1px 0 rgba(255,255,255,0.9); 
         }
 
-        /* --- 【修改点2】中心动态熊猫 --- */
+        /* --- 中心动态熊猫 --- */
         .center-circle {
             position: absolute;
             top: 50%; left: 50%;
@@ -140,7 +140,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* 保证它是正的，不是横着的 */
             transform: scale(1.1); 
         }
 
@@ -168,7 +167,6 @@
         }
         @keyframes pop { from{transform: scale(0.8); opacity: 0;} to{transform: scale(1); opacity: 1;} }
         
-        /* 弹窗里的动图 */
         #m-gif {
             width: 120px; height: 120px; object-fit: contain;
             margin: 10px auto; display: block;
@@ -203,19 +201,19 @@
                     <div class="item" style="transform: rotate(30deg);">
                         <div class="item-inner">
                             <img src="https://img.alicdn.com/bao/uploaded/i4/2207692660945/O1CN0188939c20q6vXvQzXQ_!!2207692660945.jpg_300x300.jpg">
-                            <span>戴森吹风机<br>(2025热门)</span>
+                            <span>戴森吹风机</span>
                         </div>
                     </div>
                     <div class="item" style="transform: rotate(90deg);">
                         <div class="item-inner">
                             <img src="https://cdn-icons-png.flaticon.com/512/5726/5726678.png" style="filter: drop-shadow(0 0 5px gold); width:45px; height:45px;">
-                            <span style="color:#d63384">✨神秘大奖✨<br>(保底)</span>
+                            <span style="color:#d63384">✨神秘大奖✨</span>
                         </div>
                     </div>
                     <div class="item" style="transform: rotate(150deg);">
                         <div class="item-inner">
                             <img src="https://img.alicdn.com/bao/uploaded/i2/2213578026652/O1CN01h11B112CJIxZqGzXx_!!2213578026652.jpg_300x300.jpg">
-                            <span>拍立得相机<br>(2025热门)</span>
+                            <span>拍立得相机</span>
                         </div>
                     </div>
                     <div class="item" style="transform: rotate(210deg);">
@@ -227,13 +225,13 @@
                     <div class="item" style="transform: rotate(270deg);">
                         <div class="item-inner">
                             <img src="https://img.alicdn.com/bao/uploaded/i3/2849132476/O1CN01a8899c1s511zXzXzX_!!2849132476.jpg_300x300.jpg">
-                            <span>Jellycat<br>(2025热门)</span>
+                            <span>Jellycat</span>
                         </div>
                     </div>
                     <div class="item" style="transform: rotate(330deg);">
                         <div class="item-inner">
                             <img src="https://img.alicdn.com/bao/uploaded/i1/2200723576550/O1CN0188939c20q6vXvQzXQ_!!2200723576550.jpg_300x300.jpg">
-                            <span>Stanley水杯<br>(2025热门)</span>
+                            <span>Stanley水杯</span>
                         </div>
                     </div>
                 </div>
@@ -257,17 +255,15 @@
     </div>
 
     <script>
-        // --- 1. 配置素材库 ---
-        
-        // 【修改点4】“什么都没有”时的随机可爱动图库 (熊猫/猫猫/搞笑动图)
+        // --- 素材库 ---
+        // 随机可爱失败动图
         const nothingGifs = [
-            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2JqMHZ5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/3o7abKhOpu0NwenH3O/giphy.gif", // 哭哭
-            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcHViMHZ5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/JIX9t2j0ZTN9S/giphy.gif", // 猫猫摇头
-            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3Z5aGZ5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/13CoXDiaCcCoyk/giphy.gif"  // 搞怪动作
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2JqMHZ5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/3o7abKhOpu0NwenH3O/giphy.gif", 
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcHViMHZ5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/JIX9t2j0ZTN9S/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3Z5aGZ5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/13CoXDiaCcCoyk/giphy.gif"
         ];
-
-        // 胜利时的动图
-        const winGif = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3Z5aGZ5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/KYElw07CCQQc8/giphy.gif"; // 庆祝
+        // 胜利动图
+        const winGif = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3Z5aGZ5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/KYElw07CCQQc8/giphy.gif"; 
 
         let count = 0;
         let rotation = 0;
@@ -330,7 +326,7 @@
                     playWinSound();
                     document.getElementById('m-title').innerText = "🎉 中大奖啦！";
                     document.getElementById('m-title').style.color = "#FF2D55";
-                    mGif.src = winGif; // 胜利动图
+                    mGif.src = winGif;
                     document.getElementById('m-text').innerHTML = "天呐！你抽中了【神秘大奖】！<br><strong>快问老公是什么！</strong><br>(礼物属于你啦)";
                     btn.innerText = "再次回味中奖瞬间 ❤️"; btn.style.background = "#34C759";
                 } else {
@@ -338,7 +334,6 @@
                     document.getElementById('m-title').innerText = "遗憾离场...";
                     document.getElementById('m-title').style.color = "#666";
                     
-                    // 【修改点4】随机抽取一张可爱的失败动图
                     const randomGif = nothingGifs[Math.floor(Math.random() * nothingGifs.length)];
                     mGif.src = randomGif;
 
