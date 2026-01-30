@@ -5,15 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>三周年纪念日 汪雯专属礼物转盘</title>
     <style>
-        /* --- 基础设置 --- */
+        /* --- 1. 全局样式 --- */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+            
+            /* 【修改点1】背景色改回薰衣草紫渐变 */
             background-color: #E6E6FA; 
-            background: linear-gradient(135deg, #E6E6FA 0%, #D8BFD8 100%);
-            background-image: url('background.jpg'); 
-            background-size: cover;
+            background-image: linear-gradient(135deg, #E6E6FA 0%, #B0C4DE 100%);
+            
+            /* 如果有照片，照片会覆盖上面的紫色 */
+            /* background-image: url('background.jpg'); */
+            background-size: cover; 
             background-position: center;
             background-repeat: no-repeat;
+            
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -21,448 +26,288 @@
             min-height: 100vh;
             margin: 0;
             overflow: hidden;
-            color: #1d1d1f;
+            color: #000;
         }
-
+        
+        /* 遮罩，让背景更柔和 */
         body::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(255, 255, 255, 0.15);
+            content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255, 0.2); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
             z-index: -1;
         }
 
-        /* --- 磨砂玻璃卡片 --- */
+        /* --- 2. 卡片容器 --- */
         .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
-            border-radius: 32px;
-            padding: 30px 15px; /* 稍微减小内边距，给转盘腾空间 */
-            width: 90%;
-            max-width: 380px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
-
-        h1 { 
-            margin: 0 0 8px 0; 
-            text-align: center; 
-            font-size: 26px; 
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            color: #1d1d1f;
-        }
-        .subtitle { 
-            color: #515154; 
-            margin-bottom: 20px; 
-            text-align: center; 
-            font-size: 15px; 
-            font-weight: 500;
-        }
-        
-        /* --- 转盘容器 --- */
-        .wheel-container {
-            position: relative;
-            width: 320px; /* 稍微加大一点 */
-            height: 320px;
-            margin-bottom: 25px;
-            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.15));
-        }
-        
-        /* --- 转盘本体 --- */
-        #wheel {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 10px solid #ffffff; 
-            box-sizing: border-box;
-            position: relative;
-            overflow: hidden;
-            transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1);
-            background: #fff;
-        }
-        
-        /* 扇形区域 */
-        .segment {
-            position: absolute;
-            width: 50%;
-            height: 50%;
-            transform-origin: 100% 100%;
-            clip-path: polygon(0 0, 100% 0, 100% 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .segment:nth-child(odd) { background: #E6E6FA; } 
-        .segment:nth-child(even) { background: #FFF0F5; }
-
-        /* --- 选项内容 (核心修复) --- */
-        .segment-content {
-            position: absolute;
-            /* 调整坐标：向中心靠拢，确保不被边缘切掉 */
-            left: 20px; 
-            top: 50px;
-            width: 120px; 
-            /* 修正角度：先抵消父级的倾斜，再旋转到正确角度 */
-            transform: skewY(30deg) rotate(15deg); 
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 30px;
+            padding: 30px 20px;
+            width: 90%; max-width: 380px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 2; /* 确保文字在最上层 */
-        }
-        
-        /* 图片样式 */
-        .segment-image {
-            width: 35px; 
-            height: 35px;
-            object-fit: contain;
-            margin-bottom: 4px; /* 图片和文字挨紧一点 */
-            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
-            /* 移除之前的旋转，让图片自然一点 */
+            border: 1px solid rgba(255,255,255,0.6);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
         }
 
-        /* 文字样式 (加强版) */
-        .gift-name {
-            font-size: 12px; 
-            font-weight: 900; /* 最粗体 */
-            color: #333;
-            line-height: 1.2;
-            text-shadow: 0 0 2px rgba(255,255,255,0.8); /* 白色光晕，防背景干扰 */
-            display: block;
-            width: 100%;
+        h1 { margin: 0; font-size: 24px; font-weight: 800; color: #1c1c1e; }
+        .subtitle { margin-top: 8px; margin-bottom: 25px; font-size: 14px; color: #666; }
+
+        /* --- 3. 转盘外壳 --- */
+        .wheel-wrapper {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            margin: 0 auto 30px auto;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
         }
-        
-        /* --- 指针 --- */
-        #pointer {
+
+        /* 指针 */
+        .pointer {
             position: absolute;
-            top: -22px;
-            left: 50%;
+            top: -25px; left: 50%;
             transform: translateX(-50%);
-            z-index: 10;
-            width: 44px;
-            height: 55px;
-            background-image: url("data:image/svg+xml,%3Csvg width='44' height='55' viewBox='0 0 44 55' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M22 55L0 12C0 5.37258 5.37258 0 12 0H32C38.6274 0 44 5.37258 44 12L22 55Z' fill='%23FF3B30'/%3E%3Cpath d='M22 55L0 12C0 5.37258 5.37258 0 12 0H32C38.6274 0 44 5.37258 44 12L22 55Z' fill='url(%23paint0_linear)' fill-opacity='0.2'/%3E%3Cdefs%3E%3ClinearGradient id='paint0_linear' x1='22' y1='0' x2='22' y2='55' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='white'/%3E%3Cstop offset='1' stop-color='black' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-size: contain;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+            width: 40px; height: 50px;
+            z-index: 50;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='50' viewBox='0 0 40 50' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 50L0 10C0 4.5 4.5 0 10 0H30C35.5 0 40 4.5 40 10L20 50Z' fill='%23FF3B30'/%3E%3C/svg%3E");
+            background-size: contain; background-repeat: no-repeat;
         }
+
+        /* --- 4. 转动部分 --- */
+        #spinner {
+            width: 100%; height: 100%;
+            position: relative;
+            border-radius: 50%;
+            border: 8px solid #fff; 
+            box-sizing: border-box;
+            background: #fff;
+            overflow: hidden;
+            transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1); 
+        }
+
+        /* --- 层级1: 扇形背景色 (修改配色以配合紫色背景) --- */
+        .fan-bg {
+            position: absolute; top: 0; right: 0; width: 50%; height: 50%;
+            transform-origin: 0% 100%;
+        }
+        /* 奇数格：奶油白 */
+        .fan-1, .fan-3, .fan-5 { background: #FFFBE6; }
+        /* 偶数格：淡粉色 */
+        .fan-2, .fan-4, .fan-6 { background: #FFDEE9; }
         
+        .fan-1 { transform: rotate(0deg) skewY(-30deg); }
+        .fan-2 { transform: rotate(60deg) skewY(-30deg); }
+        .fan-3 { transform: rotate(120deg) skewY(-30deg); }
+        .fan-4 { transform: rotate(180deg) skewY(-30deg); }
+        .fan-5 { transform: rotate(240deg) skewY(-30deg); }
+        .fan-6 { transform: rotate(300deg) skewY(-30deg); }
+
+        /* --- 层级2: 内容层 --- */
+        .content-wrap { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }
+        .item { position: absolute; top: 50%; left: 50%; width: 0; height: 0; }
+        .item-inner { position: absolute; top: -125px; left: -50px; width: 100px; text-align: center; }
+        .item img { width: 40px; height: 40px; object-fit: contain; display: block; margin: 0 auto 5px auto; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1)); }
+        .item span { display: block; font-size: 13px; line-height: 1.2; font-weight: 900; color: #333; text-shadow: 1px 1px 0 rgba(255,255,255,0.9); }
+
+        /* --- 【修改点2】中心小熊 --- */
         .center-circle {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 60px; height: 60px;
-            background: #ffffff;
+            width: 60px; height: 60px; /* 稍微加大一点 */
+            background: #fff;
             border-radius: 50%;
-            z-index: 5;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 10;
             display: flex; align-items: center; justify-content: center;
-            font-size: 26px; 
-            border: 4px solid #f5f5f7;
+            overflow: hidden; /* 防止图片溢出 */
+        }
+        /* 小熊动态图样式 */
+        .center-bear-img {
+            width: 90%;
+            height: 90%;
+            object-fit: cover;
         }
 
-        /* --- 按钮 --- */
+        /* --- 5. 按钮 --- */
         #spinBtn {
-            width: 85%;
-            padding: 18px 0;
-            font-size: 17px;
-            font-weight: 600;
-            background: #007AFF; 
-            color: white;
-            border: none;
-            border-radius: 16px; 
-            cursor: pointer;
-            box-shadow: 0 8px 20px rgba(0, 122, 255, 0.3);
-            transition: transform 0.1s, background 0.2s;
-            margin-top: 10px;
+            width: 80%; padding: 16px; border-radius: 20px; border: none;
+            background: #007AFF; color: white; font-size: 18px; font-weight: bold;
+            box-shadow: 0 8px 20px rgba(0, 122, 255, 0.3); cursor: pointer;
+            transition: all 0.2s;
         }
-        #spinBtn:active { transform: scale(0.97); background: #0062cc; }
-        #spinBtn:disabled { background: #E5E5EA; color: #999; cursor: not-allowed; box-shadow: none;}
-        
-        /* --- 弹窗 --- */
-        #resultModal {
-            display: none;
-            position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.4); 
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            align-items: center; justify-content: center;
+        #spinBtn:active { transform: scale(0.96); }
+        #spinBtn:disabled { background: #ccc; box-shadow: none; transform: none;}
+
+        /* --- 6. 弹窗 --- */
+        #modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+            z-index: 100; align-items: center; justify-content: center;
         }
-        .modal-content {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            padding: 35px 30px; 
-            border-radius: 28px; 
-            text-align: center;
-            width: 75%; max-width: 320px; 
-            animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        .modal-box {
+            background: rgba(255,255,255,0.95); width: 75%; max-width: 300px;
+            padding: 30px; border-radius: 25px; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        @keyframes popIn { from {transform: scale(0.8); opacity: 0;} to {transform: scale(1); opacity: 1;} }
-        
-        .closeBtn {
-            margin-top: 25px; 
-            padding: 14px 0; 
-            background: #FF2D55;
-            color: white; 
-            border: none; 
-            border-radius: 14px; 
-            font-weight: 600;
-            font-size: 17px;
-            width: 100%;
-            cursor: pointer;
+        @keyframes pop { from{transform: scale(0.8); opacity: 0;} to{transform: scale(1); opacity: 1;} }
+        .close-btn {
+            background: #FF2D55; color: white; border: none; padding: 12px 30px;
+            border-radius: 20px; font-weight: bold; margin-top: 20px; width: 100%; cursor: pointer;
         }
+
     </style>
 </head>
 <body>
 
     <div class="glass-card">
         <h1>三周年纪念日<br>汪雯专属礼物转盘</h1>
-        <div class="subtitle">老婆大人，奖品都为你准备好了 ❤️</div>
+        <div class="subtitle">老婆大人，这次看清楚了吗 ❤️</div>
 
-        <div class="wheel-container">
-            <div id="pointer"></div>
-            <div id="wheel">
-                <div class="segment" style="transform: rotate(0deg) skewY(-30deg);">
-                    <div class="segment-content">
-                        <img src="https://img.alicdn.com/bao/uploaded/i4/2207692660945/O1CN0188939c20q6vXvQzXQ_!!2207692660945.jpg_300x300.jpg" class="segment-image">
-                        <span class="gift-name">戴森吹风机<br>(2025热门)</span>
+        <div class="wheel-wrapper">
+            <div class="pointer"></div>
+            <div id="spinner">
+                
+                <div class="fan-bg fan-1"></div>
+                <div class="fan-bg fan-2"></div>
+                <div class="fan-bg fan-3"></div>
+                <div class="fan-bg fan-4"></div>
+                <div class="fan-bg fan-5"></div>
+                <div class="fan-bg fan-6"></div>
+
+                <div class="content-wrap">
+                    <div class="item" style="transform: rotate(30deg);">
+                        <div class="item-inner">
+                            <img src="https://img.alicdn.com/bao/uploaded/i4/2207692660945/O1CN0188939c20q6vXvQzXQ_!!2207692660945.jpg_300x300.jpg">
+                            <span>戴森吹风机<br>(2025热门)</span>
+                        </div>
+                    </div>
+                    <div class="item" style="transform: rotate(90deg);">
+                        <div class="item-inner">
+                            <img src="https://cdn-icons-png.flaticon.com/512/6488/6488869.png" style="filter: drop-shadow(0 0 5px gold);">
+                            <span style="color:#d63384">✨神秘大奖✨<br>(保底)</span>
+                        </div>
+                    </div>
+                    <div class="item" style="transform: rotate(150deg);">
+                        <div class="item-inner">
+                            <img src="https://img.alicdn.com/bao/uploaded/i2/2213578026652/O1CN01h11B112CJIxZqGzXx_!!2213578026652.jpg_300x300.jpg">
+                            <span>拍立得相机<br>(2025热门)</span>
+                        </div>
+                    </div>
+                    <div class="item" style="transform: rotate(210deg);">
+                        <div class="item-inner">
+                            <img src="https://cdn-icons-png.flaticon.com/512/416/416835.png" style="opacity:0.5">
+                            <span style="color:#666">什么都没有<br>(空气)</span>
+                        </div>
+                    </div>
+                    <div class="item" style="transform: rotate(270deg);">
+                        <div class="item-inner">
+                            <img src="https://img.alicdn.com/bao/uploaded/i3/2849132476/O1CN01a8899c1s511zXzXzX_!!2849132476.jpg_300x300.jpg">
+                            <span>Jellycat<br>(2025热门)</span>
+                        </div>
+                    </div>
+                    <div class="item" style="transform: rotate(330deg);">
+                        <div class="item-inner">
+                            <img src="https://img.alicdn.com/bao/uploaded/i1/2200723576550/O1CN0188939c20q6vXvQzXQ_!!2200723576550.jpg_300x300.jpg">
+                            <span>Stanley水杯<br>(2025热门)</span>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="segment" style="transform: rotate(60deg) skewY(-30deg);">
-                    <div class="segment-content">
-                        <img src="https://cdn-icons-png.flaticon.com/512/6488/6488869.png" class="segment-image" style="filter: drop-shadow(0 0 5px gold);">
-                        <span class="gift-name" style="color:#d63384; font-size:13px;">✨神秘大奖✨<br>(猜猜是啥)</span>
-                    </div>
+
+                <div class="center-circle">
+                    <img class="center-bear-img" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbjZ5ZHR4aGZ5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/MeIucAjPKoA120R7sN/giphy.gif" alt="可爱小熊">
                 </div>
-                
-                <div class="segment" style="transform: rotate(120deg) skewY(-30deg);">
-                    <div class="segment-content">
-                        <img src="https://img.alicdn.com/bao/uploaded/i2/2213578026652/O1CN01h11B112CJIxZqGzXx_!!2213578026652.jpg_300x300.jpg" class="segment-image">
-                        <span class="gift-name">拍立得相机<br>(2025热门)</span>
-                    </div>
-                </div>
-                
-                <div class="segment" style="transform: rotate(180deg) skewY(-30deg);">
-                    <div class="segment-content">
-                        <img src="https://cdn-icons-png.flaticon.com/512/416/416835.png" class="segment-image" style="opacity: 0.5;">
-                        <span class="gift-name" style="color:#666">什么都没有<br>(空气)</span>
-                    </div>
-                </div>
-                
-                <div class="segment" style="transform: rotate(240deg) skewY(-30deg);">
-                    <div class="segment-content">
-                        <img src="https://img.alicdn.com/bao/uploaded/i3/2849132476/O1CN01a8899c1s511zXzXzX_!!2849132476.jpg_300x300.jpg" class="segment-image">
-                        <span class="gift-name">Jellycat<br>(2025热门)</span>
-                    </div>
-                </div>
-                
-                <div class="segment" style="transform: rotate(300deg) skewY(-30deg);">
-                    <div class="segment-content">
-                        <img src="https://img.alicdn.com/bao/uploaded/i1/2200723576550/O1CN0188939c20q6vXvQzXQ_!!2200723576550.jpg_300x300.jpg" class="segment-image">
-                        <span class="gift-name">网红保温杯<br>(2025热门)</span>
-                    </div>
-                </div>
-                
-                <div class="center-circle">❤️</div>
             </div>
         </div>
 
-        <button id="spinBtn">开始抽奖</button>
+        <button id="spinBtn" onclick="startSpin()">开始抽奖</button>
     </div>
 
-    <div id="resultModal">
-        <div class="modal-content">
-            <h2 id="resultTitle" style="margin-top:0; font-size: 22px;"></h2>
-            <div id="resultEmoji" style="font-size: 60px; margin: 15px 0;"></div>
-            <p id="resultText" style="font-size: 17px; line-height: 1.5; color: #333; margin-bottom: 25px;"></p>
-            <button class="closeBtn" onclick="closeModal()">知道了</button>
+    <div id="modal">
+        <div class="modal-box">
+            <h2 id="m-title">中奖啦</h2>
+            <div id="m-emoji" style="font-size: 60px; margin: 15px 0;">🎉</div>
+            <p id="m-text" style="color:#666; line-height:1.6;"></p>
+            <button class="close-btn" onclick="closeModal()">开心收下</button>
         </div>
     </div>
 
     <script>
-        // --- 音效模块 ---
+        let count = 0;
+        let rotation = 0;
+        const spinner = document.getElementById('spinner');
+        const btn = document.getElementById('spinBtn');
+        const modal = document.getElementById('modal');
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
-        function playTickSound() {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            osc.type = 'triangle'; 
+        function playTick() {
+            if(audioCtx.state==='suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
             osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.05);
-            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
-            osc.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.05);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.05);
         }
 
-        function playWinSound() {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const notes = [523.25, 659.25, 783.99, 1046.50]; 
-            notes.forEach((freq, index) => {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.value = freq;
-                gain.gain.setValueAtTime(0, audioCtx.currentTime + index * 0.1);
-                gain.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + index * 0.1 + 0.05);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + index * 0.1 + 0.4);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start(audioCtx.currentTime + index * 0.1);
-                osc.stop(audioCtx.currentTime + index * 0.1 + 0.5);
+        function playWin() {
+            const notes = [523, 659, 783, 1046];
+            notes.forEach((f, i) => {
+                const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+                osc.frequency.value = f;
+                gain.gain.setValueAtTime(0, audioCtx.currentTime + i*0.1);
+                gain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + i*0.1+0.1);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + i*0.1+0.4);
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.start(audioCtx.currentTime + i*0.1); osc.stop(audioCtx.currentTime + i*0.1+0.5);
             });
         }
 
-        function playLoseSound() {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sawtooth'; 
+        function playLose() {
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+            osc.type = 'sawtooth';
             osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-            osc.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 0.3);
+            osc.frequency.linearRampToValueAtTime(100, audioCtx.currentTime+0.3);
             gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-            gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.3);
+            gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime+0.3);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime+0.3);
         }
 
-        // --- 转盘逻辑 ---
-        let spinCount = 0; 
-        const wheel = document.getElementById('wheel');
-        const spinBtn = document.getElementById('spinBtn');
-        let currentRotation = 0; 
-        let spinInterval; 
+        function startSpin() {
+            count++; btn.disabled = true; btn.innerText = "好运流转中...";
+            let loop = setInterval(playTick, 100);
+            let target; let isWin = false;
 
-        spinBtn.addEventListener('click', () => {
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+            if(count <= 4) { target = 210; isWin = false; } 
+            else { target = 90; isWin = true; }
 
-            spinCount++;
-            spinBtn.disabled = true;
-            spinBtn.innerText = `正在旋转...`;
-
-            let tickCount = 0;
-            spinInterval = setInterval(() => {
-                playTickSound();
-                tickCount++;
-                if(tickCount > 35) clearInterval(spinInterval); 
-            }, 100);
-
-            let targetAngle;
-            let resultTextForModal;
-            let resultEmojiForModal;
-            let isWin = false;
-
-            if (spinCount <= 4) {
-                targetAngle = 210; 
-                resultTextForModal = "哎呀！什么都没有抽到！<br><strong>老婆大人</strong>，再试一次，手气在后面！"; 
-                resultEmojiForModal = "🥺💨";
-                isWin = false;
-            } else {
-                targetAngle = 90;
-                resultTextForModal = "🎉 天呐！你抽中了【神秘大奖】！<br><strong>快问老公是什么！</strong><br>(礼物属于你啦)";
-                resultEmojiForModal = "🎁😍";
-                isWin = true;
-            }
-            
-            let randomSpins = Math.floor(Math.random() * 3) + 4; 
-            let finalRotation = currentRotation - (360 * randomSpins) - (targetAngle - (currentRotation % 360));
-            if (finalRotation > currentRotation) finalRotation -= 360 * (randomSpins + 1);
-            
-            wheel.style.transform = `rotate(${finalRotation}deg)`;
-            currentRotation = finalRotation; 
+            let circle = 360 * 6; 
+            let offset = -target; 
+            rotation = rotation + circle + offset - (rotation % 360); 
+            spinner.style.transform = `rotate(${rotation}deg)`;
 
             setTimeout(() => {
-                clearInterval(spinInterval); 
-                
-                if (isWin) {
-                    playWinSound();
-                    confettiEffect(); 
+                clearInterval(loop);
+                if(isWin) {
+                    playWin();
+                    document.getElementById('m-title').innerText = "🎉 中大奖啦！";
+                    document.getElementById('m-title').style.color = "#FF2D55";
+                    document.getElementById('m-emoji').innerText = "🎁😍";
+                    document.getElementById('m-text').innerHTML = "天呐！你抽中了【神秘大奖】！<br><strong>快问老公是什么！</strong><br>(礼物属于你啦)";
+                    btn.innerText = "再次回味中奖瞬间 ❤️"; btn.style.background = "#34C759";
                 } else {
-                    playLoseSound();
+                    playLose();
+                    document.getElementById('m-title').innerText = "遗憾离场...";
+                    document.getElementById('m-title').style.color = "#666";
+                    document.getElementById('m-emoji').innerText = "🥺💨";
+                    document.getElementById('m-text').innerHTML = "哎呀！什么都没有抽到！<br><strong>老婆大人</strong>，再试一次，手气在后面！";
+                    btn.innerText = `再抽一次 (第 ${count+1} 次)`; btn.style.background = "#007AFF";
                 }
-
-                showModal(isWin, resultTextForModal, resultEmojiForModal);
-                spinBtn.disabled = false;
-                
-                if (!isWin) {
-                    spinBtn.innerText = `再抽一次 (第 ${spinCount + 1} 次)`; 
-                    spinBtn.style.background = "#007AFF"; 
-                } else {
-                    spinBtn.innerText = `再次回味中奖瞬间 ❤️`; 
-                    spinBtn.style.background = "#34C759"; 
-                }
-                
+                modal.style.display = 'flex'; btn.disabled = false;
             }, 4000);
-        });
-
-        const modal = document.getElementById('resultModal');
-        const resultText = document.getElementById('resultText');
-        const resultTitle = document.getElementById('resultTitle');
-        const resultEmoji = document.getElementById('resultEmoji');
-        const closeBtn = document.querySelector('.closeBtn');
-
-        function showModal(isWin, text, emoji) {
-            if (!isWin) {
-                resultTitle.innerText = "遗憾离场...";
-                resultTitle.style.color = "#8E8E93";
-                closeBtn.style.background = "#8E8E93";
-                closeBtn.innerText = "不服，再来！";
-            } else {
-                 resultTitle.innerText = "🎉 中大奖啦！ 🎉";
-                 resultTitle.style.color = "#FF2D55";
-                 closeBtn.style.background = "#FF2D55";
-                 closeBtn.innerText = "开心收下";
-            }
-            resultText.innerHTML = text;
-            resultEmoji.innerText = emoji;
-            modal.style.display = 'flex';
         }
 
-        function closeModal() {
-            modal.style.display = 'none';
-        }
-
-        function confettiEffect() {
-            const colors = ['#FF2D55', '#5856D6', '#FF9500', '#FFCC00', '#34C759'];
-            for(let i=0; i<120; i++) {
-                const confetti = document.createElement('div');
-                confetti.style.position = 'fixed';
-                confetti.style.width = Math.random() * 8 + 4 + 'px';
-                confetti.style.height = Math.random() * 5 + 4 + 'px';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.top = -10 + 'px';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.zIndex = 200;
-                confetti.style.borderRadius = '2px';
-                document.body.appendChild(confetti);
-
-                const animation = confetti.animate([
-                    { transform: `translate3d(0,0,0) rotate(0)`, opacity: 1 },
-                    { transform: `translate3d(${Math.random()*100-50}px, 100vh, 0) rotate(${Math.random() * 720}deg)`, opacity: 0 }
-                ], {
-                    duration: Math.random() * 2000 + 1500,
-                    easing: 'cubic-bezier(0.25, 1, 0.5, 1)'
-                });
-                animation.onfinish = () => confetti.remove();
-            }
-        }
+        function closeModal() { modal.style.display = 'none'; }
     </script>
 </body>
 </html>
