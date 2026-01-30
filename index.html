@@ -9,12 +9,11 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
             
-            /* 【修改点】背景颜色设置 - 薰衣草紫 */
-            background-color: #E6E6FA; /* 纯色保底 */
-            /* 漂亮的薰衣草渐变，没放照片时显示这个 */
+            /* 背景颜色设置 - 薰衣草紫 */
+            background-color: #E6E6FA; 
             background: linear-gradient(135deg, #E6E6FA 0%, #D8BFD8 100%);
             
-            /* 尝试加载照片：如果有 background.jpg 就会盖住上面的紫色 */
+            /* 尝试加载照片 */
             background-image: url('background.jpg'); 
             background-size: cover;
             background-position: center;
@@ -30,18 +29,17 @@
             color: #1d1d1f;
         }
 
-        /* 遮罩层：让背景无论是照片还是紫色，都不会干扰文字阅读 */
         body::before {
             content: "";
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(255, 255, 255, 0.1); /* 稍微调淡了一点，保留紫色的通透感 */
+            background-color: rgba(255, 255, 255, 0.15);
             z-index: -1;
         }
 
         /* --- 磨砂玻璃卡片 --- */
         .glass-card {
-            background: rgba(255, 255, 255, 0.65); /* 稍微调低透明度，让薰衣草色透出来 */
+            background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(25px) saturate(180%);
             -webkit-backdrop-filter: blur(25px) saturate(180%);
             border-radius: 32px;
@@ -51,7 +49,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15); /* 阴影调柔和，适配浅色背景 */
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
@@ -105,37 +103,42 @@
             justify-content: center;
         }
         
-        /* 配色 - 配合薰衣草背景，转盘颜色也微调得更柔和 */
-        .segment:nth-child(odd) { background: #E6E6FA; } /* 浅紫 */
-        .segment:nth-child(even) { background: #FFD1DC; } /* 浅粉 */
-        
-        /* 为了让文字看清楚，加个交替色 */
+        .segment:nth-child(odd) { background: #E6E6FA; } 
         .segment:nth-child(even) { background: #FFF0F5; }
 
-        /* 选项内容 */
+        /* --- 选项内容 (修复位置) --- */
         .segment-content {
             position: absolute;
-            left: 18%; 
-            top: 35%;
-            transform: rotate(30deg);
+            /* 调整坐标，确保文字在宽阔区域 */
+            left: 10%; 
+            top: 30%;
+            width: 140px; /* 增加宽度防止换行 */
+            transform: rotate(30deg); /* 修正角度 */
             text-align: center;
-            width: 110px;
-            font-size: 13px;
-            font-weight: 700; 
-            color: #333;
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+            justify-content: center;
         }
         
+        /* 图片样式 */
         .segment-image {
-            width: 45px;
-            height: 45px;
+            width: 40px; /* 稍微调小一点点给文字腾地方 */
+            height: 40px;
             object-fit: contain;
-            margin-bottom: 6px;
-            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.1));
+            margin-bottom: 5px;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
             transform: rotate(-15deg); 
+        }
+
+        /* --- 新增：专门的文字样式 --- */
+        .gift-name {
+            font-size: 13px; 
+            font-weight: 800; /* 加粗 */
+            color: #333;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.8); /* 白色描边效果，防止背景干扰 */
+            white-space: nowrap; /* 强制不换行 */
+            display: block;
         }
         
         /* --- 指针 --- */
@@ -153,7 +156,6 @@
             filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
         }
         
-        /* 中心圆点 */
         .center-circle {
             position: absolute;
             top: 50%; left: 50%;
@@ -168,7 +170,7 @@
             border: 4px solid #f5f5f7;
         }
 
-        /* --- 按钮 (iOS 风格) --- */
+        /* --- 按钮 --- */
         #spinBtn {
             width: 85%;
             padding: 18px 0;
@@ -234,37 +236,37 @@
                 <div class="segment" style="transform: rotate(0deg) skewY(-30deg);">
                     <div class="segment-content" style="transform: skewY(30deg) rotate(15deg);">
                         <img src="https://img.alicdn.com/bao/uploaded/i4/2207692660945/O1CN0188939c20q6vXvQzXQ_!!2207692660945.jpg_300x300.jpg" class="segment-image">
-                        戴森吹风机
+                        <span class="gift-name">戴森吹风机</span>
                     </div>
                 </div>
                 <div class="segment" style="transform: rotate(60deg) skewY(-30deg);">
                     <div class="segment-content" style="transform: skewY(30deg) rotate(15deg);">
                         <img src="https://cdn-icons-png.flaticon.com/512/6488/6488869.png" class="segment-image" style="filter: drop-shadow(0 0 5px gold);">
-                        ✨神秘大奖✨
+                        <span class="gift-name" style="color:#d63384">✨神秘大奖✨</span>
                     </div>
                 </div>
                 <div class="segment" style="transform: rotate(120deg) skewY(-30deg);">
                     <div class="segment-content" style="transform: skewY(30deg) rotate(15deg);">
                         <img src="https://img.alicdn.com/bao/uploaded/i2/2213578026652/O1CN01h11B112CJIxZqGzXx_!!2213578026652.jpg_300x300.jpg" class="segment-image">
-                        拍立得相机
+                        <span class="gift-name">拍立得相机</span>
                     </div>
                 </div>
                 <div class="segment" style="transform: rotate(180deg) skewY(-30deg);">
                     <div class="segment-content" style="transform: skewY(30deg) rotate(15deg);">
                         <img src="https://cdn-icons-png.flaticon.com/512/416/416835.png" class="segment-image" style="opacity: 0.5;">
-                        空气 (没礼物)
+                        <span class="gift-name" style="color:#666">空气 (没礼物)</span>
                     </div>
                 </div>
                 <div class="segment" style="transform: rotate(240deg) skewY(-30deg);">
                     <div class="segment-content" style="transform: skewY(30deg) rotate(15deg);">
                         <img src="https://img.alicdn.com/bao/uploaded/i3/2849132476/O1CN01a8899c1s511zXzXzX_!!2849132476.jpg_300x300.jpg" class="segment-image">
-                        Jellycat玩偶
+                        <span class="gift-name">Jellycat玩偶</span>
                     </div>
                 </div>
                 <div class="segment" style="transform: rotate(300deg) skewY(-30deg);">
                     <div class="segment-content" style="transform: skewY(30deg) rotate(15deg);">
                         <img src="https://img.alicdn.com/bao/uploaded/i1/2200723576550/O1CN0188939c20q6vXvQzXQ_!!2200723576550.jpg_300x300.jpg" class="segment-image">
-                        Stanley保温杯
+                        <span class="gift-name">Stanley保温杯</span>
                     </div>
                 </div>
                 <div class="center-circle">❤️</div>
@@ -284,7 +286,7 @@
     </div>
 
     <script>
-        // --- 1. 黑科技：Web Audio API 音效生成 (100%有声) ---
+        // --- 音效模块 ---
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
         function playTickSound() {
@@ -335,7 +337,7 @@
             osc.stop(audioCtx.currentTime + 0.3);
         }
 
-        // --- 2. 转盘逻辑 ---
+        // --- 转盘逻辑 ---
         let spinCount = 0; 
         const wheel = document.getElementById('wheel');
         const spinBtn = document.getElementById('spinBtn');
@@ -351,7 +353,6 @@
             spinBtn.disabled = true;
             spinBtn.innerText = `正在旋转...`;
 
-            // 循环播放转动音效
             let tickCount = 0;
             spinInterval = setInterval(() => {
                 playTickSound();
@@ -365,20 +366,17 @@
             let isWin = false;
 
             if (spinCount <= 4) {
-                // 前4次：强制空气 (210度)
                 targetAngle = 210; 
                 resultTextForModal = "哎呀！什么都没有抽到！<br><strong>老婆大人</strong>，再试一次，手气在后面！"; 
                 resultEmojiForModal = "🥺💨";
                 isWin = false;
             } else {
-                // 第5次及以后：强制大奖 (90度)
                 targetAngle = 90;
                 resultTextForModal = "🎉 天呐！你抽中了【神秘大奖】！<br><strong>快问老公是什么！</strong><br>(礼物属于你啦)";
                 resultEmojiForModal = "🎁😍";
                 isWin = true;
             }
             
-            // 旋转动画逻辑
             let randomSpins = Math.floor(Math.random() * 3) + 4; 
             let finalRotation = currentRotation - (360 * randomSpins) - (targetAngle - (currentRotation % 360));
             if (finalRotation > currentRotation) finalRotation -= 360 * (randomSpins + 1);
@@ -386,7 +384,6 @@
             wheel.style.transform = `rotate(${finalRotation}deg)`;
             currentRotation = finalRotation; 
 
-            // 4秒后结算
             setTimeout(() => {
                 clearInterval(spinInterval); 
                 
@@ -400,12 +397,10 @@
                 showModal(isWin, resultTextForModal, resultEmojiForModal);
                 spinBtn.disabled = false;
                 
-                // 按钮文字逻辑：保持神秘，前面不剧透，中奖后才变色
                 if (!isWin) {
                     spinBtn.innerText = `再抽一次 (第 ${spinCount + 1} 次)`; 
                     spinBtn.style.background = "#007AFF"; 
                 } else {
-                    // 中奖后
                     spinBtn.innerText = `再次回味中奖瞬间 ❤️`; 
                     spinBtn.style.background = "#34C759"; 
                 }
