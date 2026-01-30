@@ -8,17 +8,12 @@
         /* --- 基础设置 --- */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
-            
-            /* 背景颜色设置 - 薰衣草紫 */
             background-color: #E6E6FA; 
             background: linear-gradient(135deg, #E6E6FA 0%, #D8BFD8 100%);
-            
-            /* 尝试加载照片 */
             background-image: url('background.jpg'); 
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -43,8 +38,8 @@
             backdrop-filter: blur(25px) saturate(180%);
             -webkit-backdrop-filter: blur(25px) saturate(180%);
             border-radius: 32px;
-            padding: 35px 20px;
-            width: 88%;
+            padding: 30px 15px; /* 稍微减小内边距，给转盘腾空间 */
+            width: 90%;
             max-width: 380px;
             display: flex;
             flex-direction: column;
@@ -63,7 +58,7 @@
         }
         .subtitle { 
             color: #515154; 
-            margin-bottom: 25px; 
+            margin-bottom: 20px; 
             text-align: center; 
             font-size: 15px; 
             font-weight: 500;
@@ -72,9 +67,9 @@
         /* --- 转盘容器 --- */
         .wheel-container {
             position: relative;
-            width: 300px;
-            height: 300px;
-            margin-bottom: 30px;
+            width: 320px; /* 稍微加大一点 */
+            height: 320px;
+            margin-bottom: 25px;
             filter: drop-shadow(0 15px 25px rgba(0,0,0,0.15));
         }
         
@@ -106,39 +101,42 @@
         .segment:nth-child(odd) { background: #E6E6FA; } 
         .segment:nth-child(even) { background: #FFF0F5; }
 
-        /* --- 选项内容 (修复位置) --- */
+        /* --- 选项内容 (核心修复) --- */
         .segment-content {
             position: absolute;
-            /* 调整坐标，确保文字在宽阔区域 */
-            left: 10%; 
-            top: 30%;
-            width: 140px; /* 增加宽度防止换行 */
-            transform: rotate(30deg); /* 修正角度 */
+            /* 调整坐标：向中心靠拢，确保不被边缘切掉 */
+            left: 20px; 
+            top: 50px;
+            width: 120px; 
+            /* 修正角度：先抵消父级的倾斜，再旋转到正确角度 */
+            transform: skewY(30deg) rotate(15deg); 
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            z-index: 2; /* 确保文字在最上层 */
         }
         
         /* 图片样式 */
         .segment-image {
-            width: 40px; /* 稍微调小一点点给文字腾地方 */
-            height: 40px;
+            width: 35px; 
+            height: 35px;
             object-fit: contain;
-            margin-bottom: 5px;
+            margin-bottom: 4px; /* 图片和文字挨紧一点 */
             filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
-            transform: rotate(-15deg); 
+            /* 移除之前的旋转，让图片自然一点 */
         }
 
-        /* --- 新增：专门的文字样式 --- */
+        /* 文字样式 (加强版) */
         .gift-name {
-            font-size: 13px; 
-            font-weight: 800; /* 加粗 */
+            font-size: 12px; 
+            font-weight: 900; /* 最粗体 */
             color: #333;
-            text-shadow: 0 1px 0 rgba(255,255,255,0.8); /* 白色描边效果，防止背景干扰 */
-            white-space: nowrap; /* 强制不换行 */
+            line-height: 1.2;
+            text-shadow: 0 0 2px rgba(255,255,255,0.8); /* 白色光晕，防背景干扰 */
             display: block;
+            width: 100%;
         }
         
         /* --- 指针 --- */
@@ -198,7 +196,7 @@
             align-items: center; justify-content: center;
         }
         .modal-content {
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
             padding: 35px 30px; 
@@ -234,41 +232,47 @@
             <div id="pointer"></div>
             <div id="wheel">
                 <div class="segment" style="transform: rotate(0deg) skewY(-30deg);">
-                    <div class="segment-content" style="transform: skewY(30deg) rotate(15deg);">
+                    <div class="segment-content">
                         <img src="https://img.alicdn.com/bao/uploaded/i4/2207692660945/O1CN0188939c20q6vXvQzXQ_!!2207692660945.jpg_300x300.jpg" class="segment-image">
-                        <span class="gift-name">戴森吹风机</span>
+                        <span class="gift-name">戴森吹风机<br>(2025热门)</span>
                     </div>
                 </div>
+                
                 <div class="segment" style="transform: rotate(60deg) skewY(-30deg);">
-                    <div class="segment-content" style="transform: skewY(30deg) rotate(15deg);">
+                    <div class="segment-content">
                         <img src="https://cdn-icons-png.flaticon.com/512/6488/6488869.png" class="segment-image" style="filter: drop-shadow(0 0 5px gold);">
-                        <span class="gift-name" style="color:#d63384">✨神秘大奖✨</span>
+                        <span class="gift-name" style="color:#d63384; font-size:13px;">✨神秘大奖✨<br>(猜猜是啥)</span>
                     </div>
                 </div>
+                
                 <div class="segment" style="transform: rotate(120deg) skewY(-30deg);">
-                    <div class="segment-content" style="transform: skewY(30deg) rotate(15deg);">
+                    <div class="segment-content">
                         <img src="https://img.alicdn.com/bao/uploaded/i2/2213578026652/O1CN01h11B112CJIxZqGzXx_!!2213578026652.jpg_300x300.jpg" class="segment-image">
-                        <span class="gift-name">拍立得相机</span>
+                        <span class="gift-name">拍立得相机<br>(2025热门)</span>
                     </div>
                 </div>
+                
                 <div class="segment" style="transform: rotate(180deg) skewY(-30deg);">
-                    <div class="segment-content" style="transform: skewY(30deg) rotate(15deg);">
+                    <div class="segment-content">
                         <img src="https://cdn-icons-png.flaticon.com/512/416/416835.png" class="segment-image" style="opacity: 0.5;">
-                        <span class="gift-name" style="color:#666">空气 (没礼物)</span>
+                        <span class="gift-name" style="color:#666">什么都没有<br>(空气)</span>
                     </div>
                 </div>
+                
                 <div class="segment" style="transform: rotate(240deg) skewY(-30deg);">
-                    <div class="segment-content" style="transform: skewY(30deg) rotate(15deg);">
+                    <div class="segment-content">
                         <img src="https://img.alicdn.com/bao/uploaded/i3/2849132476/O1CN01a8899c1s511zXzXzX_!!2849132476.jpg_300x300.jpg" class="segment-image">
-                        <span class="gift-name">Jellycat玩偶</span>
+                        <span class="gift-name">Jellycat<br>(2025热门)</span>
                     </div>
                 </div>
+                
                 <div class="segment" style="transform: rotate(300deg) skewY(-30deg);">
-                    <div class="segment-content" style="transform: skewY(30deg) rotate(15deg);">
+                    <div class="segment-content">
                         <img src="https://img.alicdn.com/bao/uploaded/i1/2200723576550/O1CN0188939c20q6vXvQzXQ_!!2200723576550.jpg_300x300.jpg" class="segment-image">
-                        <span class="gift-name">Stanley保温杯</span>
+                        <span class="gift-name">网红保温杯<br>(2025热门)</span>
                     </div>
                 </div>
+                
                 <div class="center-circle">❤️</div>
             </div>
         </div>
