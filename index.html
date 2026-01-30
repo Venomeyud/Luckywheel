@@ -9,12 +9,10 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
             
-            /* 【修改点1】背景色改回薰衣草紫渐变 */
+            /* 薰衣草紫渐变背景 */
             background-color: #E6E6FA; 
             background-image: linear-gradient(135deg, #E6E6FA 0%, #B0C4DE 100%);
             
-            /* 如果有照片，照片会覆盖上面的紫色 */
-            /* background-image: url('background.jpg'); */
             background-size: cover; 
             background-position: center;
             background-repeat: no-repeat;
@@ -29,7 +27,6 @@
             color: #000;
         }
         
-        /* 遮罩，让背景更柔和 */
         body::before {
             content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(255,255,255, 0.2); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
@@ -38,7 +35,7 @@
 
         /* --- 2. 卡片容器 --- */
         .glass-card {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.85);
             border-radius: 30px;
             padding: 30px 20px;
             width: 90%; max-width: 380px;
@@ -83,15 +80,10 @@
             transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1); 
         }
 
-        /* --- 层级1: 扇形背景色 (修改配色以配合紫色背景) --- */
-        .fan-bg {
-            position: absolute; top: 0; right: 0; width: 50%; height: 50%;
-            transform-origin: 0% 100%;
-        }
-        /* 奇数格：奶油白 */
-        .fan-1, .fan-3, .fan-5 { background: #FFFBE6; }
-        /* 偶数格：淡粉色 */
-        .fan-2, .fan-4, .fan-6 { background: #FFDEE9; }
+        /* 扇形背景色 */
+        .fan-bg { position: absolute; top: 0; right: 0; width: 50%; height: 50%; transform-origin: 0% 100%; }
+        .fan-1, .fan-3, .fan-5 { background: #FFFBE6; } /* 奶白 */
+        .fan-2, .fan-4, .fan-6 { background: #FFDEE9; } /* 淡粉 */
         
         .fan-1 { transform: rotate(0deg) skewY(-30deg); }
         .fan-2 { transform: rotate(60deg) skewY(-30deg); }
@@ -100,31 +92,56 @@
         .fan-5 { transform: rotate(240deg) skewY(-30deg); }
         .fan-6 { transform: rotate(300deg) skewY(-30deg); }
 
-        /* --- 层级2: 内容层 --- */
+        /* --- 内容层 --- */
         .content-wrap { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }
         .item { position: absolute; top: 50%; left: 50%; width: 0; height: 0; }
-        .item-inner { position: absolute; top: -125px; left: -50px; width: 100px; text-align: center; }
-        .item img { width: 40px; height: 40px; object-fit: contain; display: block; margin: 0 auto 5px auto; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1)); }
-        .item span { display: block; font-size: 13px; line-height: 1.2; font-weight: 900; color: #333; text-shadow: 1px 1px 0 rgba(255,255,255,0.9); }
+        
+        /* 【修改点1】将 top 值改得更小(更负)，让内容离圆心更远，即“往上提” */
+        .item-inner { 
+            position: absolute; 
+            top: -142px; /* 之前是-125px，现在往外推，显得更高 */
+            left: -50px; 
+            width: 100px; 
+            text-align: center; 
+        }
+        
+        .item img { 
+            width: 40px; height: 40px; 
+            object-fit: contain; 
+            display: block; 
+            margin: 0 auto 2px auto; /* 减小间距 */
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1)); 
+        }
+        
+        .item span { 
+            display: block; 
+            font-size: 13px; 
+            line-height: 1.2; 
+            font-weight: 900; 
+            color: #333; 
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.9); 
+        }
 
-        /* --- 【修改点2】中心小熊 --- */
+        /* --- 【修改点2】中心动态熊猫 --- */
         .center-circle {
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 60px; height: 60px; /* 稍微加大一点 */
+            width: 65px; height: 65px;
             background: #fff;
             border-radius: 50%;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             z-index: 10;
             display: flex; align-items: center; justify-content: center;
-            overflow: hidden; /* 防止图片溢出 */
+            overflow: hidden; 
+            border: 3px solid #fff;
         }
-        /* 小熊动态图样式 */
         .center-bear-img {
-            width: 90%;
-            height: 90%;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
+            /* 保证它是正的，不是横着的 */
+            transform: scale(1.1); 
         }
 
         /* --- 5. 按钮 --- */
@@ -140,16 +157,24 @@
         /* --- 6. 弹窗 --- */
         #modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
             z-index: 100; align-items: center; justify-content: center;
         }
         .modal-box {
-            background: rgba(255,255,255,0.95); width: 75%; max-width: 300px;
+            background: rgba(255,255,255,0.98); width: 75%; max-width: 300px;
             padding: 30px; border-radius: 25px; text-align: center;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         @keyframes pop { from{transform: scale(0.8); opacity: 0;} to{transform: scale(1); opacity: 1;} }
+        
+        /* 弹窗里的动图 */
+        #m-gif {
+            width: 120px; height: 120px; object-fit: contain;
+            margin: 10px auto; display: block;
+            border-radius: 10px;
+        }
+        
         .close-btn {
             background: #FF2D55; color: white; border: none; padding: 12px 30px;
             border-radius: 20px; font-weight: bold; margin-top: 20px; width: 100%; cursor: pointer;
@@ -183,7 +208,7 @@
                     </div>
                     <div class="item" style="transform: rotate(90deg);">
                         <div class="item-inner">
-                            <img src="https://cdn-icons-png.flaticon.com/512/6488/6488869.png" style="filter: drop-shadow(0 0 5px gold);">
+                            <img src="https://cdn-icons-png.flaticon.com/512/5726/5726678.png" style="filter: drop-shadow(0 0 5px gold); width:45px; height:45px;">
                             <span style="color:#d63384">✨神秘大奖✨<br>(保底)</span>
                         </div>
                     </div>
@@ -214,7 +239,7 @@
                 </div>
 
                 <div class="center-circle">
-                    <img class="center-bear-img" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbjZ5ZHR4aGZ5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/MeIucAjPKoA120R7sN/giphy.gif" alt="可爱小熊">
+                    <img class="center-bear-img" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Z5aGZ5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5ZyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/L3t51nE4bZJ6e8B4tP/giphy.gif" alt="可爱熊猫">
                 </div>
             </div>
         </div>
@@ -225,18 +250,31 @@
     <div id="modal">
         <div class="modal-box">
             <h2 id="m-title">中奖啦</h2>
-            <div id="m-emoji" style="font-size: 60px; margin: 15px 0;">🎉</div>
+            <img id="m-gif" src="" alt="">
             <p id="m-text" style="color:#666; line-height:1.6;"></p>
             <button class="close-btn" onclick="closeModal()">开心收下</button>
         </div>
     </div>
 
     <script>
+        // --- 1. 配置素材库 ---
+        
+        // 【修改点4】“什么都没有”时的随机可爱动图库 (熊猫/猫猫/搞笑动图)
+        const nothingGifs = [
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2JqMHZ5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/3o7abKhOpu0NwenH3O/giphy.gif", // 哭哭
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcHViMHZ5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/JIX9t2j0ZTN9S/giphy.gif", // 猫猫摇头
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3Z5aGZ5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/13CoXDiaCcCoyk/giphy.gif"  // 搞怪动作
+        ];
+
+        // 胜利时的动图
+        const winGif = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3Z5aGZ5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5YmF4Znd5ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/KYElw07CCQQc8/giphy.gif"; // 庆祝
+
         let count = 0;
         let rotation = 0;
         const spinner = document.getElementById('spinner');
         const btn = document.getElementById('spinBtn');
         const modal = document.getElementById('modal');
+        const mGif = document.getElementById('m-gif');
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
         function playTick() {
@@ -249,7 +287,7 @@
             osc.start(); osc.stop(audioCtx.currentTime + 0.05);
         }
 
-        function playWin() {
+        function playWinSound() {
             const notes = [523, 659, 783, 1046];
             notes.forEach((f, i) => {
                 const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
@@ -262,7 +300,7 @@
             });
         }
 
-        function playLose() {
+        function playLoseSound() {
             const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
             osc.type = 'sawtooth';
             osc.frequency.setValueAtTime(150, audioCtx.currentTime);
@@ -289,17 +327,21 @@
             setTimeout(() => {
                 clearInterval(loop);
                 if(isWin) {
-                    playWin();
+                    playWinSound();
                     document.getElementById('m-title').innerText = "🎉 中大奖啦！";
                     document.getElementById('m-title').style.color = "#FF2D55";
-                    document.getElementById('m-emoji').innerText = "🎁😍";
+                    mGif.src = winGif; // 胜利动图
                     document.getElementById('m-text').innerHTML = "天呐！你抽中了【神秘大奖】！<br><strong>快问老公是什么！</strong><br>(礼物属于你啦)";
                     btn.innerText = "再次回味中奖瞬间 ❤️"; btn.style.background = "#34C759";
                 } else {
-                    playLose();
+                    playLoseSound();
                     document.getElementById('m-title').innerText = "遗憾离场...";
                     document.getElementById('m-title').style.color = "#666";
-                    document.getElementById('m-emoji').innerText = "🥺💨";
+                    
+                    // 【修改点4】随机抽取一张可爱的失败动图
+                    const randomGif = nothingGifs[Math.floor(Math.random() * nothingGifs.length)];
+                    mGif.src = randomGif;
+
                     document.getElementById('m-text').innerHTML = "哎呀！什么都没有抽到！<br><strong>老婆大人</strong>，再试一次，手气在后面！";
                     btn.innerText = `再抽一次 (第 ${count+1} 次)`; btn.style.background = "#007AFF";
                 }
